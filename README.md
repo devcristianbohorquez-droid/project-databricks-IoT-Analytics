@@ -114,7 +114,42 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 </tr>
 </table>
 
----
+```mermaid
+
+erDiagram
+    SENSOR_EVENTS {
+        string event_id
+        string rig_id
+        string sensor_id
+        string sensor_type
+        double value
+        timestamp event_timestamp
+        date ingestion_date
+    }
+
+    SENSOR_EVENTS_CLEAN {
+        double moving_avg
+        double std_dev
+        string anomaly_flag
+    }
+
+    RIG_DAILY_SUMMARY {
+        string rig_id
+        string sensor_type
+        date ingestion_date
+        double avg_value
+        double max_value
+        double min_value
+        int anomaly_count
+    }
+
+    SENSOR_EVENTS ||--|| SENSOR_EVENTS_CLEAN : transforms
+    SENSOR_EVENTS_CLEAN ||--o{ RIG_DAILY_SUMMARY : aggregates
+
+
+
+```
+
 
 ## 📁 Estructura del Proyecto
 
