@@ -114,7 +114,7 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 </tr>
 </table>
 
----
+```mermaid
 
 erDiagram
     SENSOR_EVENTS {
@@ -148,7 +148,7 @@ erDiagram
 
 
 
-
+```
 
 
 ## 📁 Estructura del Proyecto
