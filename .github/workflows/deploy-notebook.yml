@@ -3,7 +3,7 @@ name: Dynamic Databricks Notebook Deploy
 on:
   push:
     branches:
-      - mainsss
+      - main
 
 jobs:
   deploy:
@@ -18,7 +18,7 @@ jobs:
 
     - name: Export multiple notebooks (raw)
       run: |
-      # original
+
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/angel.angel.bohorquez@gmail.com/project-databricks-IoT-Analytics/proceso"
@@ -36,7 +36,7 @@ jobs:
 
     - name: Deploy notebooks to Destination Workspace
       run: |
-      # nuevo ambiente 
+
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
         DEST_BASE="/py"
