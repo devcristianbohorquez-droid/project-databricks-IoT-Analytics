@@ -162,19 +162,20 @@ jobs:
               "job_cluster_key": "serverless_cluster",
               "new_cluster": {
                 "spark_version": "13.3.x-scala2.12",
-                "node_type_id": "i3.xlarge",
-                "driver_node_type_id": "i3.xlarge",
+                "node_type_id": "Standard_D4s_v3",
+                "driver_node_type_id": "Standard_D4s_v3",
                 "num_workers": 0,
                 "data_security_mode": "SINGLE_USER",
                 "runtime_engine": "STANDARD",
                 "custom_tags": {
                   "environment": "production",
                   "team": "data-engineering"
-                },
-                "spark_conf": {
-                  "spark.databricks.cluster.profile": "serverless",
-                  "spark.databricks.repl.allowedLanguages": "python,sql"
                 }
+                # ,
+                # "spark_conf": {
+                #   # "spark.databricks.cluster.profile": "serverless",
+                #   # "spark.databricks.repl.allowedLanguages": "python,sql"
+                # }
               }
             }
           ],
