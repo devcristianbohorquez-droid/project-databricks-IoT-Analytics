@@ -71,6 +71,9 @@ flowchart TD
 ```
 <img width="1031" height="361" alt="image" src="https://github.com/user-attachments/assets/01141b64-b0e7-4fcc-a280-1ae8e4c8d558" />
 
+<img width="1156" height="386" alt="image" src="https://github.com/user-attachments/assets/6d6bec76-ac4f-43b0-9e91-269c9bde385b" />
+
+
 Cada capa está registrada en Unity Catalog con su respectiva External Location y control de credenciales.
 
 <table>
@@ -558,8 +561,7 @@ iot-predictive-maintenance/
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/cristian-bohorquez-b02b9820a/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/devcristianbohorquez-droid)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)]
-(cristian.bohorquez.rodriguez@gmail.com)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:cristian.bohorquez.rodriguez@gmail.com)
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
