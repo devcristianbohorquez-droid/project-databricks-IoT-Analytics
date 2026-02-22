@@ -69,6 +69,7 @@ flowchart TD
     B --> S
     S --> G
 ```
+<img width="1031" height="361" alt="image" src="https://github.com/user-attachments/assets/01141b64-b0e7-4fcc-a280-1ae8e4c8d558" />
 
 Cada capa está registrada en Unity Catalog con su respectiva External Location y control de credenciales.
 
@@ -235,51 +236,7 @@ Solo insertan datos.
 
 Arquitectura enterprise real.
 
-⚙️ Tecnologías Utilizadas
 
-
-<table>
-  <thead>
-    <tr>
-      <th>Capa</th>
-      <th>Tecnología</th>
-      <th>Rol / Uso Principal</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Compute</td>
-      <td>Azure Databricks</td>
-      <td>Procesamiento distribuido de datos</td>
-    </tr>
-    <tr>
-      <td>Storage</td>
-      <td>Delta Lake</td>
-      <td>ACID, versionado y Time Travel</td>
-    </tr>
-    <tr>
-      <td>Governance</td>
-      <td>Unity Catalog</td>
-      <td>Gobernanza y control de accesos</td>
-    </tr>
-    <tr>
-      <td>Data Lake</td>
-      <td>Azure Data Lake Gen2</td>
-      <td>Almacenamiento persistente</td>
-    </tr>
-    <tr>
-      <td>Processing</td>
-      <td>PySpark</td>
-      <td>Transformaciones distribuidas</td>
-    </tr>
-    <tr>
-      <td>Analytics</td>
-      <td>Window Functions</td>
-      <td>Cálculo estadístico y agregaciones</td>
-    </tr>
-  </tbody>
-</table>
-🚀 Orquestación
 Pipeline compuesto por 3 Jobs dependientes:
 
 ```mermaid
@@ -291,7 +248,47 @@ flowchart LR
     A --> B --> C
 
 ```
-Configurado en Databricks Workflows con:
+⚙️ Requisitos Previos
+
+
+☁️ Plataforma y Accesos
+
+- Cuenta de Azure con permisos para crear y administrar recursos
+
+-Azure Databricks con workspace operativo
+
+-Cluster activo en Databricks
+
+ -Nombre sugerido: Cluster1
+
+ -Runtime compatible con Spark 3.x
+
+📦 Almacenamiento
+
+- Azure Data Lake Storage Gen2 configurado
+
+- Contenedores separados por capa:
+
+    - raw, bronze, silver, golden
+
+- External Locations y Storage Credentials correctamente definidos
+
+🐙 Control de Versiones
+
+GitHub
+
+- Repositorio inicializado
+
+- Permisos de administrador para configurar ramas y CI/CD (opcional)
+
+📊 Visualización y Análisis
+
+- Power BI Desktop 
+Para consumo de KPIs desde la capa Golden
+
+
+
+ ⚙️Configurado en Databricks Workflows con:
 
  - Control de concurrencia
 
@@ -300,21 +297,35 @@ Configurado en Databricks Workflows con:
  - Reintentos automáticos
 
  - Parametrización vía JSON
-📈 Beneficios de la Arquitectura
-✔ Separación clara de responsabilidades
-✔ Escalabilidad horizontal
-✔ Procesamiento incremental posible
-✔ Optimización con particiones
-✔ Fácil integración con Power BI / Databricks SQL
-✔ Base para streaming futuro
+   
+
+
 
 🧪 Validaciones Implementadas
+- Esquema explícito
+- Filtrado de valores negativos
+- Columnas técnicas de auditoría
+- Particionado por fecha
+- Detección estadística de anomalías
+
+# 📈 Beneficios de la Arquitectura
+- Separación clara de responsabilidades
+- Escalabilidad horizontal
+- ACID transactions con Delta Lake
+- Preparado para integración con BI
+- Base sólida para evolucionar a streaming
+- Gobernanza enterprise-ready
+
+# 🎯 Competencias Demostradas
+
+- Diseño de arquitectura Medallion
+- Implementación en entorno cloud Azure
+- Gobernanza con Unity Catalog
+- Procesamiento distribuido con Spark
+- Modelado analítico para mantenimiento predictivo
+- Construcción de pipelines productivos
 
 
-
-nty
-- sales 
-- stores
 
 **Características**:
 - ✅ Datos tal como vienen de origen
@@ -571,11 +582,12 @@ https://github.com/guaru/project-databricks/tree/dev/dashboards
 
 <div align="center">
 
-### Alejandro de Jesus Ventura Martinez
+### Cristian Bohorquez Rodriguez
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alejandro-ventura-martinez-049009142/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/guaru)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:isc.ventura@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/cristian-bohorquez-b02b9820a/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/devcristianbohorquez-droid)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)]
+(cristian.bohorquez.rodriguez@gmail.com)
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
