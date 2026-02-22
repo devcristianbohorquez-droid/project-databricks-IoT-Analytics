@@ -2,7 +2,7 @@ name: Dynamic Databricks Notebook Deploy
 on:
   push:
     branches:
-      - main_test2
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -131,7 +131,10 @@ jobs:
               "description": "Ejecuta notebook preparacion_job ",
               "notebook_task": {
                 "notebook_path": "/py/scripts/main/Preparacion_Ambiente",
-                "source": "WORKSPACE"
+                "source": "WORKSPACE",
+                "base_parameters": {
+
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -158,7 +161,14 @@ jobs:
               "description": "Ejecuta notebook bronze_to_silver_job",
               "notebook_task": {
                 "notebook_path": "/py/scripts/main/bronze_to_silver",
-                "source": "WORKSPACE"
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "catalogo": "maintenance_iot",
+                  "bronze_schema": "bronze",
+                  "silver_schema": "silver",
+                  "source_table": "sensor_events",
+                  "target_table": "sensor_events_clean"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -174,7 +184,14 @@ jobs:
               "description": "Ejecuta notebook silver_to_golden_job",
               "notebook_task": {
                 "notebook_path": "/py/scripts/main/silver_to_golden",
-                "source": "WORKSPACE"
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "catalogo": "maintenance_iot",
+                  "silver_schema": "silver",
+                  "golden_schema": "golden",
+                  "source_table": "sensor_events_clean",
+                  "target_table": "rig_daily_summary"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
