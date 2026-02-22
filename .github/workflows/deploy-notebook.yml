@@ -104,7 +104,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/Preparacion_Ambiente",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "job_cluster_key": "$CLUSTER_ID",
               "timeout_seconds": 3600,
               "max_retries": 2
             },
@@ -115,7 +115,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/ingest_to_bronze",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "job_cluster_key": "$CLUSTER_ID",
               "timeout_seconds": 3600,
               "max_retries": 2,
                "depends_on": [
@@ -131,7 +131,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/bronze_to_silver",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "job_cluster_key": "$CLUSTER_ID",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -147,7 +147,7 @@ jobs:
                 "notebook_path": "/py/scripts/main/silver_to_golden",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "job_cluster_key": "$CLUSTER_ID",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
