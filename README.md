@@ -17,8 +17,40 @@
 
 ## 🎯 Descripción
 
-Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias de tiendas Apple de diferentes años y paises, implementando la **Arquitectura Medallion** (Bronze-Silver-Gold) en Azure Databricks con **CI/CD completo** y **Delta Lake** para garantizar consistencia ACID.
+Pipeline de ingeniería de datos diseñado bajo la Arquitectura Medallion (Bronze → Silver → Golden) implementado en Azure Databricks sobre Delta Lake, utilizando Unity Catalog para gobernanza centralizada.
 
+El proyecto simula un entorno de Industrial IoT Predictive Maintenance, procesando eventos de sensores en rigs industriales:
+
+Temperatura
+
+Presión
+
+Vibración
+
+Flujo
+
+Se aplican métricas estadísticas avanzadas (moving average y desviación estándar) para detectar anomalías operativas en tiempo casi real.
+
+
+
+
+
+
+
+
+
+
+
+🏗️ Arquitectura General
+🔄 Flujo de Datos
+
+flowchart LR
+    A[Raw CSV - IoT Sensors] --> B[Bronze Layer - Delta]
+    B --> C[Silver Layer - Clean + Anomaly Detection]
+    C --> D[Golden Layer - Daily KPIs]
+    D --> E[BI / Dashboards / Analytics]
+   
+    
 ### ✨ Características Principales
 
 - 🔄 **ETL Automatizado** - Pipeline completo con despliegue automático via GitHub Actions
