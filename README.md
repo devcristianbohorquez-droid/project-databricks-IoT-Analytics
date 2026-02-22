@@ -71,7 +71,7 @@ flowchart TD
 ```
 <img width="1031" height="361" alt="image" src="https://github.com/user-attachments/assets/01141b64-b0e7-4fcc-a280-1ae8e4c8d558" />
 
-<img width="1156" height="386" alt="image" src="https://github.com/user-attachments/assets/6d6bec76-ac4f-43b0-9e91-269c9bde385b" />
+
 
 
 Cada capa está registrada en Unity Catalog con su respectiva External Location y control de credenciales.
@@ -257,37 +257,6 @@ Para consumo de KPIs desde la capa Golden
 
 ## 🚀 Instalación y Configuración
 
-### 1️⃣ Clonar el Repositorio
-
-bash
-git clone https://github.com/guaru/project-databricks.git
-cd project-databricks
-
-
-### 2️⃣ Configurar Databricks Token
-
-1. Ir a Databricks Workspace
-2. **User Settings** → **Developer** → **Access Tokens**
-3. Click en **Generate New Token**
-4. Configurar:
-   - **Comment**: GitHub CI/CD
-   - **Lifetime**: 90 days
-5. ⚠️ Copiar y guardar el token
-
-### 3️⃣ Configurar GitHub Secrets
-
-En tu repositorio: **Settings** → **Secrets and variables** → **Actions**
-
-| Secret Name | Valor Ejemplo |
-|------------|---------------|
-| DATABRICKS_HOST | https://adb-xxxxx.azuredatabricks.net |
-| DATABRICKS_TOKEN | dapi_xxxxxxxxxxxxxxxx |
-
-### 4️⃣ Verificar Storage Configuration
-
-python
-storage_path = "abfss://raw@adlsprojectsmartdata.dfs.core.windows.net"
-
 
 <div align="center">
 
@@ -297,196 +266,8 @@ storage_path = "abfss://raw@adlsprojectsmartdata.dfs.core.windows.net"
 
 ---
 
-## 💻 Uso
 
-### 🔄 Despliegue Automático (Recomendado)
-
-bash
-git add .
-git commit -m "✨ feat: mejoras en pipeline"
-git push origin master
-
-
-**GitHub Actions ejecutará**:
-- 📤 Deploy de notebooks a /Production/ETL-APPLE
-- 🔧 Creación del workflow WF_PROD_ETL_APPLE_SALES
-- ▶️ Ejecución completa:  Bronze → Silver → Gold
-- 📧 Notificaciones de resultados
-
-### 🖱️ Despliegue Manual desde GitHub
-
-1. Ir al tab **Actions** en GitHub
-2. Seleccionar **Deploy ETL Apple Sales And Warranty**
-3. Click en **Run workflow**
-4. Seleccionar rama main
-5. Click en **Run workflow**
-
-### 🔧 Ejecución Local en Databricks
-
-Navegar a /Production/ETL-APPLE y ejecutar en orden:
-
-- Enviroment preparation.py         → Crear esquema
-- ingest_catalogs.py                → Bronze Layer
-- ingest_sales.py                   → Bronze Layer
-- ingest_warranty.py                → Bronze Layer
-- transform_sales.py                → Silver Layer
-- transform_warranty.py             → Silver Layer
-- load_sales.py                     → Gold Layer
-- load_warranty.py                  → Gold Layer
-
-
----
-
-
-## 🔄 CI/CD
-
-### Pipeline de GitHub Actions
-
-yaml
-Workflow: Deploy ETL Apple Sales And Warranty
-├── Deploy notebooks → /Production/ETL-APPLE
-├── Eliminar workflow antiguo (si existe)
-├── Buscar cluster configurado
-├── Crear nuevo workflow con 4 tareas
-├── Ejecutar pipeline automáticamente
-└── Monitorear y notificar resultados
-
-
-### 🔄  Workflow Databricks
-![Texto descriptivo](CICD_ETL_APPLE.png)
-⏰ Schedule: Diario 8:00 AM (Lima)
-⏱️ Timeout total: 4 horas
- 🔒 Max concurrent runs: 1
-⏰ Notificaciones: 
-      success: isc.ventura@gmail.com
-      failed:  isc.ventura@gmail.com
-
-
----
-
-## 📈 Dashboards
-https://github.com/guaru/project-databricks/tree/dev/dashboards
-
-## 🔍 Monitoreo
-
-### En Databricks
-
-**Workflows**:
-- Ir a **Workflows** en el menú lateral
-- Buscar ETL_PROD_APPLE_SALES
-- Ver historial de ejecuciones
-
-**Logs por Tarea**:
-- Click en una ejecución específica
-- Click en cada tarea para ver logs detallados
-- Revisar stdout/stderr en caso de errores
-
-### En GitHub Actions
-
-- Tab **Actions** del repositorio
-- Ver historial de workflows
-- Click en ejecución específica para detalles
-- Revisar logs de cada step
-
----
-
-
-
-
-
-🧪 Validaciones Implementadas
-- Esquema explícito
-- Filtrado de valores negativos
-- Columnas técnicas de auditoría
-- Particionado por fecha
-- Detección estadística de anomalías
-
-# 📈 Beneficios de la Arquitectura
-- Separación clara de responsabilidades
-- Escalabilidad horizontal
-- ACID transactions con Delta Lake
-- Preparado para integración con BI
-- Base sólida para evolucionar a streaming
-- Gobernanza enterprise-ready
-
-# 🎯 Competencias Demostradas
-
-- Diseño de arquitectura Medallion
-- Implementación en entorno cloud Azure
-- Gobernanza con Unity Catalog
-- Procesamiento distribuido con Spark
-- Modelado analítico para mantenimiento predictivo
-- Construcción de pipelines productivos
-
-
-
-**Características**:
-- ✅ Datos tal como vienen de origen
-- ✅ Timestamp de ingesta
-- ✅ Preservación histórica
-- ✅ Sin validaciones
-
-</td>
-<td width="33%" valign="top">
-
-#### 🥈 Silver Layer
-**Propósito**: Modelo dimensional
-
-**Tablas**:
-- category_sales
-- product_sales
-- store_sales
-- store_warranty_status
-- warranty_products
-
-**Características**:
-- ✅ Star Schema
-- ✅ Datos normalizados
-- ✅ Validaciones completas
-
-</td>
-<td width="33%" valign="top">
-
-#### 🥇 Gold Layer
-**Propósito**: Analytics-ready
-
-**Tablas**:
-- kpi_category_sales        : Monto total en ventas agrupado por categoría y año
-- kpi_product_sales         : Monto total en ventas agrupado por producto y año
-- kpi_store_sales           : Monto total en ventas agrupado por tienda y año
-- kpi_store_warranty_status : Total de reclamos por tienda en los diferentes estatus pivot
-- kpi_product_warranty      : Productos con mayor reclamos post venta (garantía)
-
-**Características**:
-- ✅ Pre-agregados
-- ✅ Optimizado para BI
-- ✅ Performance máximo
-- ✅ Actualizaciones automáticas
-
-</td>
-</tr>
-</table>
-
----
-
-
-
----
-
-## 🛠️ Tecnologías
-
-<div align="center">
-
-| Tecnología | Propósito |
-|:----------:|:----------|
-| ![Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=flat-square&logo=databricks&logoColor=white) | Motor de procesamiento distribuido Spark |
-| ![Delta Lake](https://img.shields.io/badge/Delta_Lake-00ADD8?style=flat-square&logo=delta&logoColor=white) | Storage layer con ACID transactions |
-| ![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=flat-square&logo=apache-spark&logoColor=white) | Framework de transformación de datos |
-| ![ADLS](https://img.shields.io/badge/ADLS_Gen2-0078D4?style=flat-square&logo=microsoft-azure&logoColor=white) | Data Lake para almacenamiento persistente |
-| ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white) | Automatización CI/CD |
-| ![Databricks Dashboards](https://img.shields.io/badge/Databricks Dashboards-F2C81?style=for-the-badge&logo=databricks&logoColor=black) |  Visualización |
-
-</div>
+<img width="1156" height="386" alt="image" src="https://github.com/user-attachments/assets/6d6bec76-ac4f-43b0-9e91-269c9bde385b" />
 
 ---
 
@@ -505,7 +286,7 @@ https://github.com/guaru/project-databricks/tree/dev/dashboards
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
-</div>
+</div>ad
 
 ---
 
@@ -519,7 +300,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 **Proyecto**: Data Engineering - Arquitectura Medallion  
 **Tecnología**: Azure Databricks + Delta Lake + CI/CD  
-**Última actualización**: 2025
+**Última actualización**: 2026
 
 
 </div>
