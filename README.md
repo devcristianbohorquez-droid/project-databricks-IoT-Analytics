@@ -192,32 +192,7 @@ erDiagram
     SENSOR_EVENTS ||--|| SENSOR_EVENTS_CLEAN : transforms
     SENSOR_EVENTS_CLEAN ||--o{ RIG_DAILY_SUMMARY : aggregates
 ```
-📁 Estructura del Proyecto
-iot-predictive-maintenance/
-iot-predictive-maintenance/
-├── README.md
-├── environment/
-│   ├── 00_create_catalog_and_schemas.sql
-│   ├── 01_create_external_locations.sql
-│   └── 02_create_tables.sql
-├── bronze/
-│   └── 10_raw_to_bronze_sensor_events.py
-├── silver/
-│   └── 20_bronze_to_silver_sensor_events.py
-├── golden/
-│   └── 30_silver_to_golden_rig_daily_summary.py
-├── jobs/
-│   ├── raw_to_bronze_job.json
-│   ├── bronze_to_silver_job.json
-│   └── silver_to_golden_job.json
-├── workflows/
-│   └── iot_predictive_maintenance_workflow.json
-├── data/
-│   └── sample/
-│       └── sensor_events_sample.csv
-└── utils/
-    ├── schemas.py
-    └── constants.py
+
 🔐 Gobernanza y Seguridad
 
 Implementado con:
@@ -494,41 +469,6 @@ https://github.com/guaru/project-databricks/tree/dev/dashboards
 
 ---
 
-## 📁 Estructura del Proyecto
-
-iot-predictive-maintenance/
-│
-├── README.md
-│
-├── environment/
-│   ├── 00_create_catalog_and_schemas.sql
-│   ├── 01_create_external_locations.sql
-│   └── 02_create_tables.sql
-│
-├── bronze/
-│   └── 10_raw_to_bronze_sensor_events.py
-│
-├── silver/
-│   └── 20_bronze_to_silver_sensor_events.py
-│
-├── golden/
-│   └── 30_silver_to_golden_rig_daily_summary.py
-│
-├── jobs/
-│   ├── raw_to_bronze_job.json
-│   ├── bronze_to_silver_job.json
-│   └── silver_to_golden_job.json
-│
-├── workflows/
-│   └── iot_predictive_maintenance_workflow.json
-│
-├── data/
-│   └── sample/
-│       └── sensor_events_sample.csv
-│
-└── utils/
-    ├── schemas.py
-    └── constants.py
 
 
 ---
