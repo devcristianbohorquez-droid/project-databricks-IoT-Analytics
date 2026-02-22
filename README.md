@@ -44,12 +44,14 @@ Se aplican métricas estadísticas avanzadas (moving average y desviación está
 🏗️ Arquitectura General
 🔄 Flujo de Datos
 
+
+```mermaid
 flowchart LR
     A[Raw CSV - IoT Sensors] --> B[Bronze Layer - Delta]
     B --> C[Silver Layer - Clean + Anomaly Detection]
     C --> D[Golden Layer - Daily KPIs]
     D --> E[BI / Dashboards / Analytics]
-   
+```
     
 ### ✨ Características Principales
 
