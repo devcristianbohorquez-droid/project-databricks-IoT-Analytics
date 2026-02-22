@@ -248,200 +248,34 @@ flowchart LR
     A --> B --> C
 
 ```
-⚙️ Requisitos Previos
-
-
-☁️ Plataforma y Accesos
+## ⚙️ Requisitos Previos
+ 
+### ☁️ Plataforma y Accesos
 
 - Cuenta de Azure con permisos para crear y administrar recursos
+- Azure Databricks con workspace operativo
+- Cluster activo en Databricks
+- Nombre sugerido: Cluster1
+- Runtime compatible con Spark 3.x
 
--Azure Databricks con workspace operativo
 
--Cluster activo en Databricks
-
- -Nombre sugerido: Cluster1
-
- -Runtime compatible con Spark 3.x
-
-📦 Almacenamiento
+### 📦 Almacenamiento
 
 - Azure Data Lake Storage Gen2 configurado
-
 - Contenedores separados por capa:
-
     - raw, bronze, silver, golden
-
 - External Locations y Storage Credentials correctamente definidos
 
-🐙 Control de Versiones
 
+### 🐙 Control de Versiones
 GitHub
-
 - Repositorio inicializado
-
 - Permisos de administrador para configurar ramas y CI/CD (opcional)
 
-📊 Visualización y Análisis
 
+###  📊 Visualización y Análisis
 - Power BI Desktop 
 Para consumo de KPIs desde la capa Golden
-
-
-
- ⚙️Configurado en Databricks Workflows con:
-
- - Control de concurrencia
-
- - Logs detallados
-
- - Reintentos automáticos
-
- - Parametrización vía JSON
-   
-
-
-
-🧪 Validaciones Implementadas
-- Esquema explícito
-- Filtrado de valores negativos
-- Columnas técnicas de auditoría
-- Particionado por fecha
-- Detección estadística de anomalías
-
-# 📈 Beneficios de la Arquitectura
-- Separación clara de responsabilidades
-- Escalabilidad horizontal
-- ACID transactions con Delta Lake
-- Preparado para integración con BI
-- Base sólida para evolucionar a streaming
-- Gobernanza enterprise-ready
-
-# 🎯 Competencias Demostradas
-
-- Diseño de arquitectura Medallion
-- Implementación en entorno cloud Azure
-- Gobernanza con Unity Catalog
-- Procesamiento distribuido con Spark
-- Modelado analítico para mantenimiento predictivo
-- Construcción de pipelines productivos
-
-
-
-**Características**:
-- ✅ Datos tal como vienen de origen
-- ✅ Timestamp de ingesta
-- ✅ Preservación histórica
-- ✅ Sin validaciones
-
-</td>
-<td width="33%" valign="top">
-
-#### 🥈 Silver Layer
-**Propósito**: Modelo dimensional
-
-**Tablas**:
-- category_sales
-- product_sales
-- store_sales
-- store_warranty_status
-- warranty_products
-
-**Características**:
-- ✅ Star Schema
-- ✅ Datos normalizados
-- ✅ Validaciones completas
-
-</td>
-<td width="33%" valign="top">
-
-#### 🥇 Gold Layer
-**Propósito**: Analytics-ready
-
-**Tablas**:
-- kpi_category_sales        : Monto total en ventas agrupado por categoría y año
-- kpi_product_sales         : Monto total en ventas agrupado por producto y año
-- kpi_store_sales           : Monto total en ventas agrupado por tienda y año
-- kpi_store_warranty_status : Total de reclamos por tienda en los diferentes estatus pivot
-- kpi_product_warranty      : Productos con mayor reclamos post venta (garantía)
-
-**Características**:
-- ✅ Pre-agregados
-- ✅ Optimizado para BI
-- ✅ Performance máximo
-- ✅ Actualizaciones automáticas
-
-</td>
-</tr>
-</table>
-
----
-
-## 📁 Estructura del Proyecto
-
-iot-predictive-maintenance/
-│
-├── README.md
-│
-├── environment/
-│   ├── 00_create_catalog_and_schemas.sql
-│   ├── 01_create_external_locations.sql
-│   └── 02_create_tables.sql
-│
-├── bronze/
-│   └── 10_raw_to_bronze_sensor_events.py
-│
-├── silver/
-│   └── 20_bronze_to_silver_sensor_events.py
-│
-├── golden/
-│   └── 30_silver_to_golden_rig_daily_summary.py
-│
-├── jobs/
-│   ├── raw_to_bronze_job.json
-│   ├── bronze_to_silver_job.json
-│   └── silver_to_golden_job.json
-│
-├── workflows/
-│   └── iot_predictive_maintenance_workflow.json
-│
-├── data/
-│   └── sample/
-│       └── sensor_events_sample.csv
-│
-└── utils/
-    ├── schemas.py
-    └── constants.py
-
-
----
-
-## 🛠️ Tecnologías
-
-<div align="center">
-
-| Tecnología | Propósito |
-|:----------:|:----------|
-| ![Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=flat-square&logo=databricks&logoColor=white) | Motor de procesamiento distribuido Spark |
-| ![Delta Lake](https://img.shields.io/badge/Delta_Lake-00ADD8?style=flat-square&logo=delta&logoColor=white) | Storage layer con ACID transactions |
-| ![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=flat-square&logo=apache-spark&logoColor=white) | Framework de transformación de datos |
-| ![ADLS](https://img.shields.io/badge/ADLS_Gen2-0078D4?style=flat-square&logo=microsoft-azure&logoColor=white) | Data Lake para almacenamiento persistente |
-| ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white) | Automatización CI/CD |
-| ![Databricks Dashboards](https://img.shields.io/badge/Databricks Dashboards-F2C81?style=for-the-badge&logo=databricks&logoColor=black) |  Visualización |
-
-</div>
-
----
-
-## ⚙️ Requisitos Previos
-
-- ☁️ Cuenta de Azure con acceso a Databricks
-- 💻 Workspace de Databricks configurado
-- 🖥️ Cluster activo (nombre: Cluster1)
-- 🐙 Cuenta de GitHub con permisos de administrador
-- 📦 Azure Data Lake Storage Gen2 configurado
-- 📊 Power BI Desktop (opcional para visualización)
-
----
 
 ## 🚀 Instalación y Configuración
 
@@ -577,6 +411,144 @@ https://github.com/guaru/project-databricks/tree/dev/dashboards
 - Revisar logs de cada step
 
 ---
+
+
+
+
+
+🧪 Validaciones Implementadas
+- Esquema explícito
+- Filtrado de valores negativos
+- Columnas técnicas de auditoría
+- Particionado por fecha
+- Detección estadística de anomalías
+
+# 📈 Beneficios de la Arquitectura
+- Separación clara de responsabilidades
+- Escalabilidad horizontal
+- ACID transactions con Delta Lake
+- Preparado para integración con BI
+- Base sólida para evolucionar a streaming
+- Gobernanza enterprise-ready
+
+# 🎯 Competencias Demostradas
+
+- Diseño de arquitectura Medallion
+- Implementación en entorno cloud Azure
+- Gobernanza con Unity Catalog
+- Procesamiento distribuido con Spark
+- Modelado analítico para mantenimiento predictivo
+- Construcción de pipelines productivos
+
+
+
+**Características**:
+- ✅ Datos tal como vienen de origen
+- ✅ Timestamp de ingesta
+- ✅ Preservación histórica
+- ✅ Sin validaciones
+
+</td>
+<td width="33%" valign="top">
+
+#### 🥈 Silver Layer
+**Propósito**: Modelo dimensional
+
+**Tablas**:
+- category_sales
+- product_sales
+- store_sales
+- store_warranty_status
+- warranty_products
+
+**Características**:
+- ✅ Star Schema
+- ✅ Datos normalizados
+- ✅ Validaciones completas
+
+</td>
+<td width="33%" valign="top">
+
+#### 🥇 Gold Layer
+**Propósito**: Analytics-ready
+
+**Tablas**:
+- kpi_category_sales        : Monto total en ventas agrupado por categoría y año
+- kpi_product_sales         : Monto total en ventas agrupado por producto y año
+- kpi_store_sales           : Monto total en ventas agrupado por tienda y año
+- kpi_store_warranty_status : Total de reclamos por tienda en los diferentes estatus pivot
+- kpi_product_warranty      : Productos con mayor reclamos post venta (garantía)
+
+**Características**:
+- ✅ Pre-agregados
+- ✅ Optimizado para BI
+- ✅ Performance máximo
+- ✅ Actualizaciones automáticas
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📁 Estructura del Proyecto
+
+iot-predictive-maintenance/
+│
+├── README.md
+│
+├── environment/
+│   ├── 00_create_catalog_and_schemas.sql
+│   ├── 01_create_external_locations.sql
+│   └── 02_create_tables.sql
+│
+├── bronze/
+│   └── 10_raw_to_bronze_sensor_events.py
+│
+├── silver/
+│   └── 20_bronze_to_silver_sensor_events.py
+│
+├── golden/
+│   └── 30_silver_to_golden_rig_daily_summary.py
+│
+├── jobs/
+│   ├── raw_to_bronze_job.json
+│   ├── bronze_to_silver_job.json
+│   └── silver_to_golden_job.json
+│
+├── workflows/
+│   └── iot_predictive_maintenance_workflow.json
+│
+├── data/
+│   └── sample/
+│       └── sensor_events_sample.csv
+│
+└── utils/
+    ├── schemas.py
+    └── constants.py
+
+
+---
+
+## 🛠️ Tecnologías
+
+<div align="center">
+
+| Tecnología | Propósito |
+|:----------:|:----------|
+| ![Databricks](https://img.shields.io/badge/Azure_Databricks-FF3621?style=flat-square&logo=databricks&logoColor=white) | Motor de procesamiento distribuido Spark |
+| ![Delta Lake](https://img.shields.io/badge/Delta_Lake-00ADD8?style=flat-square&logo=delta&logoColor=white) | Storage layer con ACID transactions |
+| ![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=flat-square&logo=apache-spark&logoColor=white) | Framework de transformación de datos |
+| ![ADLS](https://img.shields.io/badge/ADLS_Gen2-0078D4?style=flat-square&logo=microsoft-azure&logoColor=white) | Data Lake para almacenamiento persistente |
+| ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white) | Automatización CI/CD |
+| ![Databricks Dashboards](https://img.shields.io/badge/Databricks Dashboards-F2C81?style=for-the-badge&logo=databricks&logoColor=black) |  Visualización |
+
+</div>
+
+---
+
+
+
 
 ## 👤 Autor
 
