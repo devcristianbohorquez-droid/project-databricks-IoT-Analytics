@@ -17,34 +17,26 @@
 
 ## 🎯 Descripción
 
-Pipeline de ingeniería de datos diseñado bajo la Arquitectura Medallion (Bronze → Silver → Golden) implementado en Azure Databricks sobre Delta Lake, utilizando Unity Catalog para gobernanza centralizada.
+Pipeline de ingeniería de datos diseñado bajo la **Arquitectura Medallion** (Bronze → Silver → Gold), implementado en **Azure Databricks** sobre **Delta Lake**, con gobernanza centralizada mediante **Unity Catalog**.
 
-El proyecto simula un entorno de Industrial IoT Predictive Maintenance, procesando eventos de sensores en rigs industriales:
+El proyecto simula un entorno de **Industrial IoT Predictive Maintenance**, procesando eventos de sensores en rigs industriales con los siguientes tipos de señales:
 
-Temperatura
+| Sensor | Descripción |
+|--------|-------------|
+| 🌡️ Temperatura | Monitoreo térmico de componentes críticos |
+| ⚙️ Presión | Control de presión en sistemas hidráulicos |
+| 📳 Vibración | Detección de desgaste mecánico |
+| 💧 Flujo | Medición de caudales en tuberías |
 
-Presión
+Se aplican **métricas estadísticas avanzadas** (moving average y desviación estándar) para detectar anomalías operativas en tiempo casi real.
 
-Vibración
+---
 
-Flujo
+## 🏗️ Arquitectura General
 
-Se aplican métricas estadísticas avanzadas (moving average y desviación estándar) para detectar anomalías operativas en tiempo casi real.
+### 🔄 Flujo de Datos
 
-
-
-
-
-
-
-
-
-
-
-🏗️ Arquitectura General
-
-🔄 Flujo de Datos
-
+El pipeline sigue un flujo lineal de transformación progresiva desde los datos crudos hasta los KPIs de negocio:
 
 ```mermaid
 flowchart LR
@@ -54,7 +46,9 @@ flowchart LR
     D --> E[BI / Dashboards / Analytics]
 ```
 
-🏛️ Arquitectura Física en ADLS
+### 🏛️ Arquitectura Física en Azure Data Lake Storage Gen2
+
+Los datos se almacenan en **contenedores independientes por capa** dentro de ADLS Gen2, garantizando aislamiento y control de acceso granular:
 
 ```mermaid
 flowchart TD
@@ -70,8 +64,6 @@ flowchart TD
     S --> G
 ```
 <img width="1031" height="361" alt="image" src="https://github.com/user-attachments/assets/01141b64-b0e7-4fcc-a280-1ae8e4c8d558" />
-
-
 
 
 Cada capa está registrada en Unity Catalog con su respectiva External Location y control de credenciales.
@@ -139,27 +131,28 @@ Vista ejecutiva para monitoreo operativo y toma de decisiones.
 
 
 
-🧠 Detección de Anomalías
+# 🧠 Detección de Anomalías
 
-value > moving_avg + 3 * std_dev
+El pipeline aplica detección estadística de outliers en la capa Silver usando la **regla de los 3 sigmas**, una técnica ampliamente adoptada en sistemas de monitoreo industrial.
 
-Donde:
+### ¿Cómo funciona la regla de 3 sigmas?
 
-- moving_avg = media móvil de 10 eventos
+La idea es simple: si un valor de sensor se aleja demasiado del comportamiento reciente — más de 3 desviaciones estándar de la media móvil — se considera **anómalo**. Esto captura picos, caídas bruscas o comportamiento fuera de rango sin necesidad de umbrales fijos hardcodeados.
 
-- std_dev = desviación estándar en la ventana
+```python
+# Lógica aplicada por sensor en ventana deslizante de 10 eventos
+anomaly_flag = (
+    "ANOMALY" if value > moving_avg + 3 * std_dev
+    else "NORMAL"
+)
+```
 
-- Regla de 3 sigmas para detección outliers
+## 📊 Modelo de Datos
 
-Esto permite identificar comportamiento anómalo por:
+El modelo de datos refleja directamente la filosofía de la arquitectura Medallion: **cada tabla es una versión más refinada y valiosa de la anterior**. Los datos no se duplican por capricho — cada capa tiene un propósito claro y añade valor concreto sobre la anterior.
 
-- rig_id
+`SENSOR_EVENTS` captura el hecho crudo tal como ocurrió en el sensor. `SENSOR_EVENTS_CLEAN` enriquece ese evento con contexto estadístico que permite clasificarlo. `RIG_DAILY_SUMMARY` colapsa miles de eventos individuales en una vista operativa diaria, optimizada para consumo por equipos de operaciones y BI.
 
-- sensor_id
-
-- orden temporal
-
-📊 Modelo de Datos
 
 ```mermaid
 erDiagram
@@ -227,52 +220,54 @@ flowchart LR
 
 ```
 ## ⚙️ Requisitos Previos
- 
+
 ### ☁️ Plataforma y Accesos
 
-- Cuenta de Azure con permisos para crear y administrar recursos
-- Azure Databricks con workspace operativo
-- Cluster activo en Databricks
-- Nombre sugerido: Cluster1
-- Runtime compatible con Spark 3.x
+- Cuenta de **Azure** con permisos para crear y administrar recursos
+- Dos workspaces de **Azure Databricks** (DEV y PROD)
+- **Azure Data Lake Storage Gen2** con contenedores por capa
+- **Unity Catalog** habilitado y configurado
+- Cluster activo en Databricks con runtime **Spark 3.x+**
+  - Nombre sugerido: `Cluster1`
 
+### 🔑 Variables de Entorno (GitHub Secrets)
 
-### 📦 Almacenamiento
+```bash
+DATABRICKS_HOST_DEV       # URL del workspace de desarrollo
+DATABRICKS_TOKEN_DEV      # Token de acceso al workspace DEV
+DATABRICKS_HOST_PROD      # URL del workspace de producción
+DATABRICKS_TOKEN_PROD     # Token de acceso al workspace PROD
+```
 
-- Azure Data Lake Storage Gen2 configurado
-- Contenedores separados por capa:
-    - raw, bronze, silver, golden
-- External Locations y Storage Credentials correctamente definidos
-
-
-### 🐙 Control de Versiones
-GitHub
-- Repositorio inicializado
-- Permisos de administrador para configurar ramas y CI/CD (opcional)
-
-
-###  📊 Visualización y Análisis
-- Power BI Desktop 
-Para consumo de KPIs desde la capa Golden
-
-## 🚀 Instalación y Configuración
-
-
-<div align="center">
-
-✅ **¡Configuración completa!**
-
-</div>
 
 ---
+
+🔄 Gestión de Entornos con GitHub Actions y Azure Databricks
+
+Este proyecto implementa un flujo de CI/CD que permite gestionar cambios entre el entorno de desarrollo y el entorno de producción de forma controlada y automatizada, utilizando GitHub Actions como orquestador y Azure Databricks como plataforma de procesamiento de datos.
+Arquitectura del flujo
 
 
 <img width="1156" height="386" alt="image" src="https://github.com/user-attachments/assets/6d6bec76-ac4f-43b0-9e91-269c9bde385b" />
 
+
+¿Cómo funciona?
+
+El proyecto cuenta con dos workspaces de Azure Databricks, uno por entorno:
+
+Entorno de Desarrollo → asociado a la rama contruncion. Aquí se realizan todos los cambios, pruebas y validaciones antes de pasar a producción.
+Entorno de Producción → asociado a la rama main. Solo recibe cambios que han pasado satisfactoriamente por el flujo de CI/CD.
+
+El puente entre ambos entornos es GitHub Actions, que se encarga de ejecutar automáticamente las validaciones y despliegues necesarios cuando se hace merge de contruncion hacia main. De esta forma se garantiza que ningún cambio llega a producción sin haber sido revisado y aprobado previamente.
+Ventajas de este enfoque
+
+Control de cambios: todo cambio queda registrado en Git, con historial completo y trazabilidad.
+Separación de entornos: el workspace de producción nunca se toca directamente, reduciendo el riesgo de errores.
+Automatización: GitHub Actions elimina pasos manuales y asegura que el proceso de despliegue sea siempre consistente.
+Rollback sencillo: ante cualquier problema, es posible revertir el merge y restaurar el estado anterior.
+
+
 ---
-
-
-
 
 ## 👤 Autor
 
@@ -286,21 +281,23 @@ Para consumo de KPIs desde la capa Golden
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
-</div>ad
+</div>
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la **Licencia MIT** — ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
 
 <div align="center">
 
-**Proyecto**: Data Engineering - Arquitectura Medallion  
-**Tecnología**: Azure Databricks + Delta Lake + CI/CD  
-**Última actualización**: 2026
+**Proyecto:** Data Engineering — Arquitectura Medallion  
+**Stack:** Azure Databricks · Delta Lake · Unity Catalog · GitHub Actions  
+**Última actualización:** 2026
+
 
 
 </div>
+
